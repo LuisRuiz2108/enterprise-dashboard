@@ -48,7 +48,7 @@ This project intentionally uses the latest Angular APIs over their legacy equiva
 ### Installation
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/enterprise-dashboard.git
+git clone https://github.com/LuisRuiz2108/enterprise-dashboard.git
 cd enterprise-dashboard
 npm install
 ng serve
