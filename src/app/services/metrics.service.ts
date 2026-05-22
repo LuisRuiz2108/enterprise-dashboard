@@ -35,7 +35,6 @@ export class MetricsService {
       map((countries) =>
         countries
           .sort((a, b) => b.population - a.population)
-          .slice(0, 50)
           .map((c, i) => ({
             id: i + 1,
             country: c.name.common,
