@@ -1,59 +1,95 @@
-# EnterpriseDashboard
+# Enterprise Dashboard
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.3.
+A production-grade Angular dashboard application built with modern Angular APIs, Angular Material, and real-world data from the [REST Countries API](https://restcountries.com).
 
-## Development server
+![Angular](https://img.shields.io/badge/Angular-21-red?logo=angular)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?logo=typescript)
+![Angular Material](https://img.shields.io/badge/Angular%20Material-21-purple?logo=angular)
 
-To start a local development server, run:
+## Features
+
+- 🔐 **Authentication** — Login flow with route guards protecting the dashboard
+- 📊 **Stats Cards** — Real-time KPIs derived from live API data
+- 📈 **Region Chart** — Bar chart showing population distribution across world regions
+- 🗺️ **Data Table** — Sortable, filterable, paginated table of the top 50 most populated countries
+- 📱 **Responsive Layout** — Collapsible sidebar with persistent header
+- ⚡ **Optimized HTTP** — Single API call shared across all components via `shareReplay(1)`
+
+## Tech Stack
+
+- **Framework:** Angular 21 (Standalone Components)
+- **UI Library:** Angular Material
+- **Charts:** Chart.js + ng2-charts
+- **State:** Angular Signals (`signal`, `computed`, `effect`)
+- **HTTP:** Angular HttpClient with RxJS `shareReplay`
+- **Styling:** SCSS
+- **CI/CD:** GitHub Actions
+
+## Modern Angular APIs Used
+
+This project intentionally uses the latest Angular APIs over their legacy equivalents:
+
+| Modern | Legacy (avoided) |
+|---|---|
+| `input()` | `@Input()` |
+| `output()` | `@Output()` |
+| `viewChild()` | `@ViewChild()` |
+| `signal()` / `effect()` | Component state via class properties |
+| `@if` / `@for` | `*ngIf` / `*ngFor` |
+| Standalone Components | NgModules |
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- Angular CLI 21+
+
+### Installation
 
 ```bash
+git clone https://github.com/YOUR_USERNAME/enterprise-dashboard.git
+cd enterprise-dashboard
+npm install
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Open your browser at `http://localhost:4200`
 
-## Code scaffolding
+### Demo Credentials
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+```
+Email:    admin@dashboard.com
+Password: admin123
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Project Structure
 
-```bash
-ng generate --help
+```
+src/
+├── app/
+│   ├── components/
+│   │   ├── header/
+│   │   ├── sidebar/
+│   │   ├── stats-card/
+│   │   ├── data-table/
+│   │   └── region-chart/
+│   ├── pages/
+│   │   ├── login/
+│   │   └── dashboard/
+│   ├── services/
+│   │   ├── auth.service.ts
+│   │   └── metrics.service.ts
+│   └── guards/
+│       └── auth.guard.ts
 ```
 
-## Building
+## Live Demo
 
-To build the project run:
+🔗 [View Live Demo](https://YOUR_DEPLOY_URL.vercel.app)
 
-```bash
-ng build
-```
+## Author
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+**Luis Eduardo Ruiz Sanchez**  
+Senior Frontend Engineer — Angular · TypeScript · Enterprise Web Applications  
+[LinkedIn](https://www.linkedin.com/in/luis-eduardo-ruiz-sanchez-85b979183/)

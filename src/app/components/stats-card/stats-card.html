@@ -1,0 +1,16 @@
+<mat-card class="stats-card">
+    <mat-card-content>
+        <div class="card-row">
+            <div class="card-info">
+                <p class="card-title">{{ title() }}</p>
+                <p class="card-value">{{ value() }}</p>
+                <p class="card-change" [class.positive]="change() > 0" [class.negative]="change() < 0">
+                    {{ change() > 0 ? '+' : '-' }}{{ change() }} %
+                </p>
+            </div>
+            <div class="card-icon">
+                <mat-icon>{{ icon() }}</mat-icon>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

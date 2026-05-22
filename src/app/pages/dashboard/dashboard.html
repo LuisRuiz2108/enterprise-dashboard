@@ -1,0 +1,26 @@
+<app-sidebar [isOpen]="sidebarOpen()">
+  <div class="dashboard-wrapper">
+    <app-header (toggleSidebar)="sidebarOpen.set(!sidebarOpen())"></app-header>
+    <main class="dashboard-content">
+      @if (isLoading()) {
+        <div class="loading">
+          <mat-spinner diameter="48"></mat-spinner>
+        </div>
+      } @else {
+        <div class="stats-grid">
+          @for (stat of stats(); track stat.title) {
+            <app-stats-card
+              [title]="stat.title"
+              [value]="stat.value"
+              [change]="stat.change"
+              [icon]="stat.icon"
+            ></app-stats-card>
+          }
+        </div>
+
+        <app-region-chart></app-region-chart>
+        <app-data-table></app-data-table>
+      }
+    </main>
+  </div>
+</app-sidebar>
