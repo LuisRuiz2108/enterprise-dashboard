@@ -19,7 +19,7 @@ export interface TableRow {
 }
 
 // Shape of a country object returned by REST Countries v5 with the
-// response_fields below. Only the fields we request are present.
+// response_fields below. Only the fields we request are present
 interface V5Country {
   names: { common: string };
   population: number;
