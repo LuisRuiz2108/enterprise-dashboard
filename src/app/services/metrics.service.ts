@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, shareReplay, map } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, EMPTY, shareReplay, map, expand, reduce } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface StatCard {
   title: string;
@@ -17,30 +18,67 @@ export interface TableRow {
   flag: string;
 }
 
+// Shape of a country object returned by REST Countries v5 with the
+// response_fields below. Only the fields we request are present.
+interface V5Country {
+  names: { common: string };
+  population: number;
+  region: string;
+  codes: { alpha_3: string };
+  flag: { url_png: string };
+}
+
+interface V5Response {
+  data: {
+    objects: V5Country[];
+    meta: { total: number; count: number; limit: number; offset: number; more: boolean };
+  };
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class MetricsService {
-  private readonly BASE_URL = 'https://restcountries.com/v3.1';
-  private countries$: Observable<any[]>;
+  private readonly BASE_URL = 'https://api.restcountries.com/countries/v5';
+  private readonly PAGE_SIZE = 100; // free-plan max per request
+  private readonly FIELDS = 'names.common,population,region,codes.alpha_3,flag.url_png';
+  private countries$: Observable<V5Country[]>;
 
   constructor(private http: HttpClient) {
-    this.countries$ = this.http
-      .get<any[]>(`${this.BASE_URL}/all?fields=name,population,region,flags,cca3`)
-      .pipe(shareReplay(1));
+    this.countries$ = this.fetchAllCountries().pipe(shareReplay(1));
+  }
+
+  // v5 is paginated (max 100 per page on the free plan), so we walk the pages
+  // with `expand` until meta.more is false, then flatten every page's objects.
+  private fetchAllCountries(): Observable<V5Country[]> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${environment.restCountriesApiKey}`,
+    });
+    const page = (offset: number) =>
+      this.http.get<V5Response>(
+        `${this.BASE_URL}?response_fields=${this.FIELDS}&limit=${this.PAGE_SIZE}&offset=${offset}`,
+        { headers }
+      );
+
+    return page(0).pipe(
+      expand((res) =>
+        res.data.meta.more ? page(res.data.meta.offset + this.PAGE_SIZE) : EMPTY
+      ),
+      reduce((acc, res) => acc.concat(res.data.objects), [] as V5Country[])
+    );
   }
 
   getCountries(): Observable<TableRow[]> {
     return this.countries$.pipe(
       map((countries) =>
-        countries
+        [...countries]
           .sort((a, b) => b.population - a.population)
           .map((c, i) => ({
             id: i + 1,
-            country: c.name.common,
+            country: c.names.common,
             population: c.population,
             region: c.region,
-            flag: c.flags.svg,
+            flag: c.flag.url_png,
           }))
       )
     );
